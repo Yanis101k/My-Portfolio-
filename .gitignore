@@ -1,0 +1,42 @@
+# Virtual environment
+venv/
+ENV/
+env/
+
+# Python cache and bytecode files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Log files
+logs/
+*.log
+
+# Environment variables
+.env
+
+# SQLite database files (optional, only ignore if you don’t want to track local DB)
+*.sqlite3
+*.db
+
+# IDE/editor-specific files
+.vscode/
+.idea/
+*.swp
+
+# macOS system files
+.DS_Store
+
+# Unit test cache
+.coverage
+htmlcov/
+.tox/
+nosetests.xml
+pytest_cache/
+
+# environement variables file 
+.env
+
+# utitlity files 
+utils/
