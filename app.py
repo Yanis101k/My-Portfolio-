@@ -17,6 +17,14 @@ app.config.from_object(Config)
 # step 3: Set up logging ( creates a log file and writes important events )
 setup_logging()
 
+# test logging 
+import logging 
+@app.route('/logtest')
+def logtest():
+    logging.debug("Debug message from /logtest route")
+    logging.info("Info message from /logtest route")
+    logging.error("Error message from /logtest route")
+    return "Logging test completed"
 # Step 4 : Define a Simple  route to check if the server is runing
 @app.route('/')
 
