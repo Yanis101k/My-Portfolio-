@@ -14,10 +14,12 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import sqlite3   # ✅ To verify database file creation
-from database.connector import DatabaseConnector  # ✅ Class under test
+
 
 # 🔧 Set up a temporary test database path in the environment
 os.environ["DATABASE_PATH"] = "database/test_portfolio.db"
+
+from database.connector import DatabaseConnector  # ✅ Class under test
 
 class TestDatabaseConnector(unittest.TestCase):
     """
@@ -29,6 +31,8 @@ class TestDatabaseConnector(unittest.TestCase):
         This runs before each test. It initializes a DatabaseConnector instance.
         """
         self.db = DatabaseConnector()
+        print("Using DB:", self.db._DatabaseConnector__db_path)
+
 
     def tearDown(self):
         """

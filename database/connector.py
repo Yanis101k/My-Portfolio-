@@ -50,7 +50,7 @@ class DatabaseConnector:
         """
 
         if self.__connection : 
-             # if the application is connected before we don't need to connect again 
+             # if the application is connected before we don't need to connect again
              return self.__connection 
         else : 
                 try:

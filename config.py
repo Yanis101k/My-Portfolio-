@@ -15,7 +15,7 @@ class Config :
     ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
 
     # Path to the database 
-    DATABASE_PATH = os.getenv(" DATABASE_PATH" , "database/portfolio.db")
+    DATABASE_PATH = os.getenv("DATABASE_PATH" , "database/portfolio.db")
 
     # Logging configuration 
     LOG_FILE = os.getenv("LOG_FILE" , "logs/app.log")
