@@ -34,33 +34,34 @@ class DatabaseConnector:
         self.__connection = None 
 
     
-    def __connect( self ):
-
-        """
-        Establish a connection to the SQLite database
-        using private methode because this methode 
-        will be never used outside this class and 
-        the external classes will use get_connection methode 
-        to connect to the datbase ( encapusation priciple applied ) 
-        """
-
-        try:
-            self.__connection = sqlite3.connect(self.__db_path)
-            self.logger.info(f"Connected to database : {self.__db_path}")
-        except sqlite3.Error as e : 
-            self.logger.error(f"Failed to connect database : {e}")
-            raise
 
     def get_connection( self ) : 
             
             """
-            Returns the active connection , connecting if necessary.
+            Returns the active connection 
             """
-            if self.__connection is None: 
-                self.__connect()
             return self.__connection 
         
+    
+    def connect( self ):
 
+        """
+        Establish a connection to the SQLite database
+        """
+
+        if self.__connection : 
+             # if the application is connected before we don't need to connect again 
+             return self.__connection 
+        else : 
+                try:
+                    self.__connection = sqlite3.connect(self.__db_path)
+                    self.logger.info(f"Connected to database : {self.__db_path}")
+                    return self.__connection
+            
+                except sqlite3.Error as e : 
+                    self.logger.error(f"Failed to connect database : {e}")
+                    return None
+            
     def close( self ) : 
 
             """

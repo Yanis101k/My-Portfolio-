@@ -42,7 +42,7 @@ class TestDatabaseConnector(unittest.TestCase):
         """
         Test if the connector creates a valid SQLite connection.
         """
-        connection = self.db.get_connection()
+        connection = self.db.connect()
         self.assertIsInstance(connection, sqlite3.Connection)  # ✅ Asserts correct type
         self.assertFalse(connection is None)  # ✅ Ensure connection was actually created
 
@@ -50,19 +50,19 @@ class TestDatabaseConnector(unittest.TestCase):
         """
         Test that calling get_connection() multiple times returns the same connection.
         """
-        conn1 = self.db.get_connection()
-        conn2 = self.db.get_connection()
+        conn1 = self.db.connect()
+        conn2 = self.db.connect()
         self.assertIs(conn1, conn2)  # ✅ Should return same connection object
 
     def test_connection_close(self):
         """
         Test if the connection closes properly and becomes None internally.
         """
-        self.db.get_connection()
+        self.db.connect()
         self.db.close()
 
-        # Accessing private var to confirm it's None (optional)
-        self.assertIsNone(self.db._DatabaseConnector__connection)  # ⛔ Not ideal but acceptable in test
+        # check if the connection really closed and becomes none internally 
+        self.assertIsNone(self.db.get_connection() )  
 
 # Run the tests if this file is executed directly
 if __name__ == '__main__':
