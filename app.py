@@ -14,6 +14,7 @@ app = Flask( __name__ )
 # step 2 : Load configuration settings from the config class ( includes secret key, DB path, admin username and password etc.)
 app.config.from_object(Config)
 
+
 # step 3: Set up logging ( creates a log file and writes important events )
 setup_logging()
 
@@ -25,11 +26,13 @@ def logtest():
     logging.info("Info message from /logtest route")
     logging.error("Error message from /logtest route")
     return "Logging test completed"
+
+
 # Step 4 : Define a Simple  route to check if the server is runing
 @app.route('/')
-
 def home() : 
     return "Portfolio Home Page - Flask App is Running"
+
 
 #Step 5 : Run the app the app only if this file is executed directly ( not imported )
 
