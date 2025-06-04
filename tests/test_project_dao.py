@@ -65,13 +65,23 @@ class TestProjectDAO(unittest.TestCase):
         projects = self.dao.get_all_projects()
         self.assertEqual(len(projects), 1)
         self.assertEqual(projects[0].get_title(), "Test Title")
+    
 
     def test_get_project_by_id(self):
         '''
         ✅ Test retrieving a project by its ID
         '''
-        # Add project
+        # insert three project and after that try to find the project from those three project using its id 
+         # Add project to find 
+        project = Project(None, "title project 1", "description project 1", None, None, None)
+        self.dao.add_project(project)
+        
+        # Add project to find 
         project = Project(None, "Find Me", "To find by ID", None, None, None)
+        self.dao.add_project(project)
+
+         # Add project to find 
+        project = Project(None, "title project 2", "description project 2", None, None, None)
         self.dao.add_project(project)
 
         # Fetch the inserted project’s ID
@@ -82,15 +92,27 @@ class TestProjectDAO(unittest.TestCase):
 
         found = self.dao.get_project_by_id(project_id)
         self.assertIsNotNone(found)
-        self.assertEqual(found.get_title(), "Find Me")
-
+        self.assertEqual(found.get_id(), project_id ) 
+        self.assertEqual(found.get_title(), "Find Me") 
+        self.assertEqual(found.get_description(), "To find by ID") 
+    
+    
     def test_update_project(self):
         '''
         ✅ Test updating an existing project
         '''
+
         # Add project
-        project = Project(None, "Old Title", "Old Description", None, None, None)
-        self.dao.add_project(project)
+        unchangeable_project1 = Project( 1 , "unchangeable title 1 ", "unchangeable description 1", None, None, None)
+        self.dao.add_project(unchangeable_project1)
+
+        # Add project
+        project_to_update = Project( None , "Old Title", "Old Description", None, None, None)
+        self.dao.add_project(project_to_update)
+
+        # Add project
+        unchangeable_project2 = Project( 3 , "unchangeable title 2", "unchangeable title 2", None, None, None)
+        self.dao.add_project(unchangeable_project2)
 
         # Get its ID
         cursor = self.conn.cursor()
@@ -101,31 +123,70 @@ class TestProjectDAO(unittest.TestCase):
         updated = Project(project_id, "New Title", "New Description", None, None, None)
         self.dao.update_project(updated)
 
-        # Fetch it again
+        # Fetch it again to check if it updated 
         fetched = self.dao.get_project_by_id(project_id)
         self.assertEqual(fetched.get_title(), "New Title")
         self.assertEqual(fetched.get_description(), "New Description")
+
+        
+        # Fetch other projects to check if they remain the same
+        unchangeable_project = self.dao.get_project_by_id( 1 )
+        self.assertEqual( unchangeable_project.get_title() , unchangeable_project1.get_title() )
+        self.assertEqual( unchangeable_project.get_description() , unchangeable_project1.get_description() )
+
+        unchangeable_project = self.dao.get_project_by_id( 3 )
+        self.assertEqual( unchangeable_project.get_title() , unchangeable_project2.get_title() )
+        self.assertEqual( unchangeable_project.get_description() , unchangeable_project2.get_description() )
 
     def test_delete_project(self):
 
         '''
         ✅ Test deleting a project by ID
         '''
+
         # Add project
-        project = Project(None, "Delete Me", "To be deleted", None, None, None)
-        self.dao.add_project(project)
+        project_not_to_delete1 = Project(None, "project to not delete title 1", "project to not delete description 1", None, None, None)
+        self.dao.add_project(project_not_to_delete1 )
+
+        # Add project
+        project_to_delete = Project(None, "Delete Me", "To be deleted", None, None, None)
+        self.dao.add_project( project_to_delete )
+
+        # Add project
+        project_not_to_delete2 = Project(None, "project to not delete title 2", "project to not delete description 2", None, None, None)
+        self.dao.add_project( project_not_to_delete2 )
 
         # Get its ID
         cursor = self.conn.cursor()
         cursor.execute("SELECT id FROM projects WHERE title = ?", ("Delete Me",))
-        project_id = cursor.fetchone()[0]
+        project_to_delete_id = cursor.fetchone()[0]
 
         # Delete the project
-        self.dao.delete_project(project_id)
+        self.dao.delete_project(project_to_delete_id)
 
-        # Try to fetch it again
-        deleted = self.dao.get_project_by_id(project_id)
+
+ 
+        # Try to fetch it again and be sure it deleted 
+        deleted = self.dao.get_project_by_id(project_to_delete_id)
         self.assertIsNone(deleted)
+
+        # be sur others projects are not deleted 
+
+        # get the id of the first project that should not be deleted 
+        cursor.execute("SELECT id FROM projects WHERE title = ? " , ("project to not delete title 1",) )
+        project_not_to_delete_id = cursor.fetchone()[0]
+        project_not_to_delete = self.dao.get_project_by_id( project_not_to_delete_id )
+        self.assertIsNotNone(project_not_to_delete)
+
+        # get the id of the second project that should not be deleted 
+        project_not_to_delete_id =  cursor.execute("SELECT id FROM projects WHERE title = ? " , ("project to not delete title 2",) )
+        project_not_to_delete_id = cursor.fetchone()[0]
+        project_not_to_delete = self.dao.get_project_by_id( project_not_to_delete_id )
+        self.assertIsNotNone(project_not_to_delete)
+
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
