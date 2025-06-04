@@ -60,7 +60,7 @@ class DatabaseConnector:
             
                 except sqlite3.Error as e : 
                     self.logger.error(f"Failed to connect database : {e}")
-                    return None
+                    raise 
             
     def close( self ) : 
 
