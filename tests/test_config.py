@@ -16,12 +16,12 @@ from config import Config
 # Print each config variable to confirm it's loaded correctly from .env
 def test_print_config():
     print("Testing config loading...\n")
-    print("SECRET_KEY:", Config.SECRET_KEY)
-    print("ADMIN_USERNAME:", Config.ADMIN_USERNAME)
-    print("ADMIN_PASSWORD_HASH:", Config.ADMIN_PASSWORD_HASH)
-    print("DATABASE_PATH:", Config.DATABASE_PATH)
-    print("DEBUG:", Config.DEBUG)
-    print("LOG_FILE:", Config.LOG_FILE)
+    print("SECRET_KEY:", Config.get_secret_key() )
+    print("ADMIN_USERNAME:", Config.get_admin_username())
+    print("ADMIN_PASSWORD_HASH:", Config.get_admin_password_hash() )
+    print("DATABASE_PATH:", Config.get_database_path() )
+    print("DEBUG:", Config.get_debug())
+    print("LOG_FILE:", Config.get_log_file() )
 
 
 if __name__ == "__main__":
