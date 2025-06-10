@@ -27,22 +27,23 @@ class DatabaseConnector:
         self.logger = logging.getLogger(__name__)
 
         # Private Attribute for database path 
-        self.__db_path= Config.DATABASE_PATH
+        self.__db_path= Config.get_database_path()
 
         # Private attribute to hold the SQLite connection 
 
         self.__connection = None 
-
     
+    """
+     Check if the app is currently connected to the database.
+    :return: True if connection is active, False otherwise.
+    """
+    def app_connected_to_database( self ) -> bool :
+         
+         connected = self.__connection is not None 
+         self.logger.info(f" database connection check : {connected} ") 
+         return connected    
 
-    def get_connection( self ) : 
-            
-            """
-            Returns the active connection 
-            """
-            return self.__connection 
-        
-    
+
     def connect( self ):
 
         """

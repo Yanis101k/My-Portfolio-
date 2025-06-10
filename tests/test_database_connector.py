@@ -66,7 +66,7 @@ class TestDatabaseConnector(unittest.TestCase):
         self.db.close()
 
         # check if the connection really closed and becomes none internally 
-        self.assertIsNone(self.db.get_connection() )  
+        self.assertIsNot(self.db.app_connected_to_database() , True )  
 
 # Run the tests if this file is executed directly
 if __name__ == '__main__':

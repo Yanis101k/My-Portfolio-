@@ -57,6 +57,8 @@ class TestProjectDAO(unittest.TestCase):
         '''
         ✅ Test creating and retrieving a single project
         '''
+
+        
         # Add a sample project
         project = Project(None, "Test Title", "Test Description", "img.png", "https://github.com/test", "https://live.com")
         self.dao.add_project(project)
