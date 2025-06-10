@@ -210,6 +210,8 @@ class TestProjectController( unittest.TestCase ) :
         project_id_to_update = 2 
         self.project_controller.update_project( project_id_to_update , project_to_update_with )
         projects_list_after_updating = self.project_controller.get_all_projects()
+
+        # the resulted projects dicts after deleting 
         project_dicts_after_updating = [
                          { "id" : None , "title" : projects_list_after_updating[0].get_title() , 
                           "description" : projects_list_after_updating[0].get_description() , 
@@ -229,7 +231,7 @@ class TestProjectController( unittest.TestCase ) :
                           "github_url" : projects_list_after_updating[2].get_github_url() , 
                           "live_url" : projects_list_after_updating[2].get_live_url() } 
                         ]  
-        
+        # the expected projects dicts after updating 
         expected_projects_dicts_after_updating = [
                                                     { "id" : None , "title" : "project title 1" , "description" : "project description 1" , 
                                                      "image_url" : None , "github_url" : None , "live_url" : None } ,
@@ -302,6 +304,7 @@ class TestProjectController( unittest.TestCase ) :
         self.project_controller.delete_project( 2 )
         projects_list_after_deleting = self.project_controller.get_all_projects()
         self.assertEqual( len( projects_list_after_deleting ) , 2 )
+        # resulted projects dicts after deleting  
         project_dicts_after_deleteing = [
                          { "id" : None , "title" : projects_list_after_deleting[0].get_title() , 
                           "description" : projects_list_after_deleting[0].get_description() , 
@@ -315,6 +318,7 @@ class TestProjectController( unittest.TestCase ) :
                           "github_url" : projects_list_after_deleting[1].get_github_url() , 
                           "live_url" : projects_list_after_deleting[1].get_live_url() } ]
         
+        # projects dicts expected ( the correct one ) after deleting 
         expected_projects_dicts_after_deleting = [
                                                    { "id" : None , "title" : "project title 1" , "description" : "project description 1" , 
                                                       "image_url" : None , "github_url" : None , "live_url" : None } , 
