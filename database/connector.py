@@ -55,7 +55,7 @@ class DatabaseConnector:
              return self.__connection 
         else : 
                 try:
-                    self.__connection = sqlite3.connect(self.__db_path)
+                    self.__connection = sqlite3.connect(self.__db_path , check_same_thread=False )
                     self.logger.info(f"Connected to database : {self.__db_path}")
                     return self.__connection
             
