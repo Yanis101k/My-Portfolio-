@@ -7,6 +7,7 @@ from config import Config
 # import the logging setup function to enable centralized logging for debugging and monitoring
 from logging_config import setup_logging 
 
+from routes.project_routes import api_project_routes
 # step 1 : Create the Flask app instance 
 
 app = Flask( __name__ )
@@ -18,14 +19,8 @@ app.config.from_object(Config)
 # step 3: Set up logging ( creates a log file and writes important events )
 setup_logging()
 
-# test logging 
-import logging 
-@app.route('/logtest')
-def logtest():
-    logging.debug("Debug message from /logtest route")
-    logging.info("Info message from /logtest route")
-    logging.error("Error message from /logtest route")
-    return "Logging test completed"
+
+app.register_blueprint(api_project_routes)
 
 
 # Step 4 : Define a Simple  route to check if the server is runing
