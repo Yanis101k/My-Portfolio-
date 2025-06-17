@@ -14,8 +14,12 @@ import os
 # Make root directory visible to Python so we can import config.py
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-# Set environment variable to use a temporary database
-os.environ["DATABASE_PATH"] = "database/test_portfolio.db"
+# Load .env.test before importing Config or app
+from dotenv import load_dotenv
+env_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', '.env.test')
+load_dotenv(dotenv_path=env_path)
+
+from config import Config
 
 from database.connector import DatabaseConnector # Manages SQLite connection
 from database.project_dao import ProjectDAO # DAO to test
@@ -50,8 +54,8 @@ class TestProjectDAO(unittest.TestCase):
         ✅ Runs after each test to close DB and delete test database file
         '''
         self.db.close()
-        if os.path.exists("database/test_portfolio.db"):
-            os.remove("database/test_portfolio.db")
+        if os.path.exists(Config.get_database_path() ):
+            os.remove( Config.get_database_path() )
 
     def test_add_and_get_project(self):
         '''

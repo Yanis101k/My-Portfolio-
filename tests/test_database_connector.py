@@ -13,11 +13,14 @@ import os
 # Make root directory visible to Python so we can import config.py
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+# Load .env.test before importing Config or app
+from dotenv import load_dotenv
+env_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', '.env.test')
+load_dotenv(dotenv_path=env_path)
+
+from config import Config
+
 import sqlite3   # ✅ To verify database file creation
-
-
-# 🔧 Set up a temporary test database path in the environment
-os.environ["DATABASE_PATH"] = "database/test_portfolio.db"
 
 from database.connector import DatabaseConnector  # ✅ Class under test
 
@@ -39,8 +42,8 @@ class TestDatabaseConnector(unittest.TestCase):
         This runs after each test. It closes the DB connection and deletes the temp file.
         """
         self.db.close()
-        if os.path.exists("database/test_portfolio.db"):
-            os.remove("database/test_portfolio.db")
+        if os.path.exists(Config.get_database_path()):
+            os.remove( Config.get_database_path() )
 
     def test_connection_establishment(self):
         """
