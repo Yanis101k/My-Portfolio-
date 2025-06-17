@@ -10,6 +10,11 @@ import os
 
 # Make root directory visible to Python so we can import config.py
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+# Load .env.test before importing Config or app
+from dotenv import load_dotenv
+env_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', '.env.test')
+load_dotenv(dotenv_path=env_path)
 # Import the Config class from config.py to access app settings
 from config import Config
 
@@ -21,8 +26,6 @@ def test_print_config():
     print("ADMIN_PASSWORD_HASH:", Config.get_admin_password_hash() )
     print("DATABASE_PATH:", Config.get_database_path() )
     print("DEBUG:", Config.get_debug())
-    print("LOG_FILE:", Config.get_log_file() )
-
 
 if __name__ == "__main__":
     test_print_config()

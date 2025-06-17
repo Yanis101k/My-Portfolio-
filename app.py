@@ -1,13 +1,18 @@
 # import Flask to create the web application using flask framework 
 from flask import Flask 
 
-# import my custom Config class to load environment variables from the .env file
-from config import Config 
 
 # import the logging setup function to enable centralized logging for debugging and monitoring
 from logging_config import setup_logging 
 
+from routes.auth_routes import api_auth 
 from routes.project_routes import api_project_routes
+
+from dotenv import load_dotenv
+load_dotenv()  # This loads the default .env for production
+
+# import my custom Config class to load environment variables from the .env file
+from config import Config 
 # step 1 : Create the Flask app instance 
 
 app = Flask( __name__ )
@@ -20,14 +25,9 @@ app.config.from_object(Config)
 setup_logging()
 
 
-app.register_blueprint(api_project_routes)
-
-
-# Step 4 : Define a Simple  route to check if the server is runing
-@app.route('/')
-def home() : 
-    return "Portfolio Home Page - Flask App is Running"
-
+app.register_blueprint( api_project_routes )
+app.register_blueprint( api_auth )
+app.secret_key = Config.get_secret_key()
 
 #Step 5 : Run the app the app only if this file is executed directly ( not imported )
 

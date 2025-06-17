@@ -3,15 +3,19 @@ import logging
 
 from controllers.project_controller import ProjectController  #  Business logic handler
 
+
+from decorators.auth import login_required
 #  Define the blueprint for RESTful API endpoints
 api_project_routes = Blueprint("api_project_routes", __name__)
 controller = ProjectController()
 logger = logging.getLogger(__name__)
+from middleware.api_key_required import require_api_key
 
 # ===========================
 #  GET all projects
 # ===========================
 @api_project_routes.route("/api/projects", methods=["GET"])
+@require_api_key
 def get_all_projects():
     try:
         
@@ -41,7 +45,9 @@ def get_all_projects():
 # ===========================
 # GET a single project by ID
 # ===========================
+
 @api_project_routes.route("/api/projects/<int:project_id>", methods=["GET"])
+@require_api_key
 def get_project_by_id(project_id):
     try:
         project = controller.get_project_by_id(project_id)
@@ -56,7 +62,10 @@ def get_project_by_id(project_id):
 # ===========================
 # ✅ POST create a new project
 # ===========================
+
 @api_project_routes.route("/api/projects", methods=["POST"])
+@login_required 
+@require_api_key
 def create_project():
     try:
         data = request.get_json()
@@ -72,6 +81,8 @@ def create_project():
 # ✅ PUT update existing project
 # ===========================
 @api_project_routes.route("/api/projects/<int:project_id>", methods=["PUT"])
+@login_required
+@require_api_key
 def update_project(project_id):
     try:
         data = request.get_json()
@@ -87,6 +98,8 @@ def update_project(project_id):
 # ✅ DELETE a project
 # ===========================
 @api_project_routes.route("/api/projects/<int:project_id>", methods=["DELETE"])
+@login_required
+@require_api_key
 def delete_project(project_id):
     try:
         if controller.delete_project(project_id):
