@@ -13,7 +13,7 @@ def about():
 
 @frontend.route("/projects")
 def projects():
-    return render_template("portfolio.html")
+    return render_template("portfolio.html" , now=datetime.now() )
 
 @frontend.route("/contact")
 def contact():

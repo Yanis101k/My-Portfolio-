@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | Yanis Kaced</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li class="active"><a href="/projects">Projects</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="portfolio spad">
+        <div class="container">
+            <h2 class="section-title">My Projects</h2>
+            <div id="project-container" class="row portfolio__gallery"></div>
+        </div>
+    </main>
+
+    <footer>
+        <p style="text-align:center">© {{ now.year }} Yanis Kaced — Backend Developer</p>
+    </footer>
+
+    <script>
+    console.log("🧪 Script loaded");
+
+    fetch('/api/projects')
+        .then(response => {
+            console.log("🛰️ Got response:", response);
+            return response.json();
+        })
+        .then(projects => {
+            console.log("📦 Projects:", projects);
+            const container = document.getElementById('project-container');
+
+            if (projects.length === 0) {
+                container.innerHTML = '<p>No projects found.</p>';
+                return;
+            }
+
+            projects.forEach(project => {
+                const card = document.createElement('div');
+                card.className = 'col-lg-4 col-md-6 portfolio__item';
+
+                card.innerHTML = `
+                    <div class="portfolio__item__video set-bg" style="background-image: url('${project.image_url || '/static/images/default.jpg'}');">
+                        <a href="${project.live_url || '#'}" class="play-btn" target="_blank"><i class="fa fa-play"></i></a>
+                    </div>
+                    <div class="portfolio__item__text">
+                        <h4>${project.title}</h4>
+                        <p>${project.description}</p>
+                        <div>
+                            ${project.github_url ? `<a href="${project.github_url}" target="_blank">GitHub</a>` : ''}
+                            ${project.live_url ? ` | <a href="${project.live_url}" target="_blank">Live Demo</a>` : ''}
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        })
+        .catch(error => {
+            console.error('🔥 Error fetching projects:', error);
+            document.getElementById('project-container').innerHTML = '<p style="color:red">Failed to load projects.</p>';
+        });
+</script>
+
+</body>
+</html>
