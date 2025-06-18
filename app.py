@@ -7,6 +7,7 @@ from logging_config import setup_logging
 
 from routes.auth_routes import api_auth 
 from routes.project_routes import api_project_routes
+from routes.frontend_routes import frontend  # ✅ Import your frontend blueprint
 
 from dotenv import load_dotenv
 load_dotenv()  # This loads the default .env for production
@@ -28,6 +29,9 @@ setup_logging()
 app.register_blueprint( api_project_routes )
 app.register_blueprint( api_auth )
 app.secret_key = Config.get_secret_key()
+
+# ✅ Register your blueprint for the frontend routes
+app.register_blueprint(frontend)
 
 #Step 5 : Run the app the app only if this file is executed directly ( not imported )
 
